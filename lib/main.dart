@@ -1,0 +1,127 @@
+import 'package:destini_challenge_starting/story_brain.dart';
+import 'package:flutter/material.dart';
+
+void main() => runApp(Destini());
+
+class Destini extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData.dark(),
+      home: StoryPage(),
+    );
+  }
+}
+
+StoryBrain storyBrain = StoryBrain();
+final snackBar = SnackBar(content: Text('UHM... ¡Respuesta incorrecta!'));
+
+class StoryPage extends StatefulWidget {
+  _StoryPageState createState() => _StoryPageState();
+}
+
+class _StoryPageState extends State<StoryPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 15.0),
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("images/background.png"), fit: BoxFit.cover),
+        ),
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Expanded(
+                flex: 12,
+                child: Center(
+                  child: Text(
+                    storyBrain.getStory(),
+                    style: TextStyle(
+                      fontSize: 25.0,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: FlatButton(
+                  onPressed: () {
+                    //Choice 1 made by user.
+                    setState(() {
+                      if (storyBrain.nextStory(1)) {
+                        print("Error");
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                    });
+                  },
+                  color: Colors.red,
+                  child: Text(
+                    storyBrain.getChoice1(),
+                    style: TextStyle(
+                      fontSize: 20.0,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Expanded(
+                flex: 2,
+                child: Visibility(
+                  visible: storyBrain.buttonShouldBeVisible(),
+                  child: FlatButton(
+                    onPressed: () {
+                      setState(() {
+                        if (storyBrain.nextStory(2)) {
+                          print("Error");
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      });
+                    },
+                    color: Colors.blue,
+                    child: Text(
+                      storyBrain.getChoice2(),
+                      style: TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Expanded(
+                flex: 2,
+                child: Visibility(
+                  visible: storyBrain.buttonShouldBeVisible(),
+                  child: FlatButton(
+                    onPressed: () {
+                      setState(() {
+                        if (storyBrain.nextStory(3)) {
+                          print("Error");
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      });
+                    },
+                    color: Colors.green,
+                    child: Text(
+                      storyBrain.getChoice3(),
+                      style: TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
